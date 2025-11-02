@@ -9,11 +9,10 @@
 # Basic Site Settings
 locale                   : "en-US"
 site_theme               : "default" # Currently available options are "default", "air"
-title                    : "Your Name / Site Title"
+title                    : "lemeii"
 title_separator          : "-"
-name                     : &name "Your Name"
-description              : &description "Your Name's academic portfolio"   # Update this with a general description of your site, this is the default if not overridden by a page
-url                      : https://leemeii.github.io # The base hostname & protocol for your site e.g. "https://[your GitHub username].github.io",
+name                     : &name "Meilin li"
+description: "Meilin Li | Chongqing University Software Engineering Student | Static Analysis, LLMs, Software Security, RAG"url                      : https://leemeii.github.io # The base hostname & protocol for your site e.g. "https://[your GitHub username].github.io",
                                                            # or if you already have some other page hosted on Github then use "https://[your GitHub username].github.io/[Your Repo Name]"
 baseurl                  : "" # the subpath of your site, e.g. "/blog"
 repository               : "leemeii.github.io"
@@ -26,7 +25,7 @@ author:
   avatar           : "profile.jpg"
   name             : "Your Sidebar Name"
   pronouns         :  "she/her"  
-  bio              : "Software Engineering Student at Chongqing University | Interested in Static Analysis, LLMs, Software Security, and RAG Systems"
+  bio              : "Software Engineering Student at Chongqing University |Interested in Static Analysis, LLMs, Software Security, and RAG Systems"
   location         : "Chongqing,China"
   employer         : "Chongqing University"
   uri              : # URL
