@@ -7,25 +7,26 @@ redirect_from:
   - /about.html
 ---
 
-Welcome to my academic homepage! I'm Meilin Li, a Class of 2024 Software Engineering student at Chongqing University, passionate about cutting-edge technologies in software engineering.
+Welcome to my academic homepage! 
+
+I'm **Meilin Li**, a Software Engineering student (Class of 2024) at Chongqing University, passionate about exploring cutting-edge technologies in software development.
 
 ## Research Interests
 
-I'm currently focusing on learning and researching the following technical areas:
+I'm currently focusing on:
 
 - **Program Analysis**: Static analysis and its applications in software quality assurance
-- **Artificial Intelligence**: Large language models and their innovative applications in software engineering
+- **Artificial Intelligence**: Large language models and their innovative applications in software engineering  
 - **Software Security**: Vulnerability discovery, security testing, and software security assurance
 - **Development Technologies**: RAG (Retrieval-Augmented Generation) system design and implementation
-- **Programming Languages**: Deep learning and practice in Java, C++, and Python
+- **Programming Languages**: Java, C++, and Python
 
-## Technical Background
+## Current Focus
 
-As a software engineering student, I'm committed to integrating theoretical learning with engineering practice, exploring the scientific principles and engineering methodologies of software development. I'm particularly interested in leveraging modern technical approaches to enhance software quality, security, and reliability.
-
-## About This Website
-
-This website is powered by the [Academic Pages template](https://github.com/academicpages/academicpages.github.io) and hosted on GitHub Pages. I'll be sharing my learning notes, project experiences, and research findings here.
+- Deep diving into static analysis tools and techniques
+- Experimenting with LLM-powered development assistants  
+- Exploring software vulnerability detection methods
+- Building practical projects with Java, C++ and Python
 
 ---
 
