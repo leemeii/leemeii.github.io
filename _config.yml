@@ -23,7 +23,7 @@ repository               : "leemeii.github.io"
 #               Additional customization can be done by editing /_includes/author-profile.html
 author:
   # Biographic information
-  avatar           : "profile.png"
+  avatar           : "profile.jpg"
   name             : "Your Sidebar Name"
   pronouns         :  "she/her"  
   bio              : "Software Engineering Student at Chongqing University | Interested in Static Analysis, LLMs, Software Security, and RAG Systems"
