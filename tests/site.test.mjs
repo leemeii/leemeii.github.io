@@ -99,3 +99,91 @@ test('ships an accessible responsive stylesheet for every declared visual mode',
   assert.match(css, /@media\s*\(prefers-reduced-motion:\s*reduce\)/);
   assert.match(css, /overflow-x:\s*(?:hidden|clip)/);
 });
+
+test('resolves and toggles color themes deterministically', async () => {
+  const { nextTheme, resolveTheme } = await import('../assets/js/main.js');
+
+  assert.equal(resolveTheme('light', true), 'light');
+  assert.equal(resolveTheme('dark', false), 'dark');
+  assert.equal(resolveTheme(null, true), 'dark');
+  assert.equal(resolveTheme('unexpected', false), 'light');
+  assert.equal(nextTheme('dark'), 'light');
+  assert.equal(nextTheme('light'), 'dark');
+});
+
+test('applies a theme with an accurate accessible action label', async () => {
+  const { applyTheme } = await import('../assets/js/main.js');
+  const label = { textContent: '' };
+  const button = {
+    attributes: {},
+    querySelector(selector) {
+      return selector === '.theme-toggle-text' ? label : null;
+    },
+    setAttribute(name, value) {
+      this.attributes[name] = value;
+    },
+  };
+  const root = { dataset: {} };
+
+  applyTheme(root, button, 'dark');
+
+  assert.equal(root.dataset.theme, 'dark');
+  assert.equal(label.textContent, 'Dark');
+  assert.equal(button.attributes['aria-label'], '切换到浅色主题');
+});
+
+test('initializes from preferences and persists the next user choice', async () => {
+  const { initializeTheme } = await import('../assets/js/main.js');
+  const label = { textContent: '' };
+  const button = new EventTarget();
+  const attributes = {};
+  button.querySelector = () => label;
+  button.setAttribute = (name, value) => {
+    attributes[name] = value;
+  };
+  const root = { dataset: {} };
+  const saved = new Map([['leemeii-theme', 'dark']]);
+  const storage = {
+    getItem(key) {
+      return saved.get(key) ?? null;
+    },
+    setItem(key, value) {
+      saved.set(key, value);
+    },
+  };
+
+  const initialTheme = initializeTheme({
+    root,
+    button,
+    storage,
+    mediaQuery: { matches: false },
+  });
+  assert.equal(initialTheme, 'dark');
+
+  button.dispatchEvent(new Event('click'));
+
+  assert.equal(root.dataset.theme, 'light');
+  assert.equal(saved.get('leemeii-theme'), 'light');
+  assert.equal(label.textContent, 'Light');
+  assert.equal(attributes['aria-label'], '切换到深色主题');
+});
+
+test('falls back safely when browser storage is unavailable', async () => {
+  const { initializeTheme } = await import('../assets/js/main.js');
+  const root = { dataset: {} };
+  const unavailableStorage = {
+    getItem() {
+      throw new Error('storage unavailable');
+    },
+  };
+
+  const initialTheme = initializeTheme({
+    root,
+    button: null,
+    storage: unavailableStorage,
+    mediaQuery: { matches: true },
+  });
+
+  assert.equal(initialTheme, 'dark');
+  assert.equal(root.dataset.theme, 'dark');
+});
