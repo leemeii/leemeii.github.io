@@ -42,6 +42,9 @@ test('presents supplied achievements without overstating submissions', async () 
     'H 奖',
     '5000+',
     '8 万+',
+    '重庆大学大数据与软件学院程序设计实训院一等奖',
+    '重庆大学绿春县创新创业大赛优秀奖',
+    '重庆 2026 女子问界女子半程马拉松完赛',
     'Testing Static Analyzers via Semantic-Preserving Mutators',
     'Detecting Logic Bugs in Vector DBMSs',
     'CoEffi: Enhance Efficient Code Generation',
@@ -76,9 +79,12 @@ test('keeps public links safe and private proof data out of the page', async () 
 
 test('declares descriptive metadata and stable asset paths', async () => {
   const html = await readProjectFile('index.html');
+  const iconPath = html.match(/<link[^>]+rel="icon"[^>]+href="([^"]+)"/)?.[1];
 
   assert.match(html, /<title>[^<]*leemeii[^<]*<\/title>/i);
   assert.match(html, /<meta[^>]+name="description"[^>]+content="[^"]{20,}"/);
+  assert.equal(iconPath, 'assets/favicon.svg');
+  assert.match(await readProjectFile(iconPath), /<svg[^>]+viewBox="0 0 64 64"/);
   assert.match(html, /href="assets\/css\/styles\.css"/);
   assert.match(html, /src="assets\/js\/main\.js"/);
   assert.match(html, /type="module"/);
