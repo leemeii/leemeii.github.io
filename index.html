@@ -1,0 +1,419 @@
+<!doctype html>
+<html lang="zh-CN" data-theme="light">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="leemeii 的个人主页：记录软件测试、静态分析、向量数据库研究，以及学业、竞赛与实践经历。">
+    <meta name="theme-color" content="#f3eee2">
+    <meta property="og:title" content="leemeii · Personal Homepage">
+    <meta property="og:description" content="在软件测试、静态分析与智能代码生成的交叉处，探索更可靠的软件系统。">
+    <meta property="og:type" content="website">
+    <title>leemeii · Personal Homepage</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&amp;family=Noto+Serif+SC:wght@500;600;700;900&amp;display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/styles.css">
+    <script>
+      try {
+        const savedTheme = localStorage.getItem('leemeii-theme');
+        const darkBySystem = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        document.documentElement.dataset.theme = savedTheme === 'light' || savedTheme === 'dark'
+          ? savedTheme
+          : darkBySystem ? 'dark' : 'light';
+      } catch (error) {
+        document.documentElement.dataset.theme = 'light';
+      }
+    </script>
+  </head>
+  <body>
+    <a class="skip-link" href="#main-content">跳到主要内容</a>
+
+    <header class="site-header" id="home">
+      <div class="nav-shell">
+        <a class="wordmark" href="#home" aria-label="返回首页">
+          <span class="wordmark-mark" aria-hidden="true">L.</span>
+          <span>leemeii</span>
+        </a>
+
+        <nav class="site-nav" aria-label="主导航">
+          <a href="#about">关于</a>
+          <a href="#research">研究</a>
+          <a href="#honors">荣誉</a>
+          <a href="#journey">足迹</a>
+          <a href="#contact">联系</a>
+        </nav>
+
+        <button class="theme-toggle" type="button" data-theme-toggle aria-label="切换到深色主题">
+          <span class="theme-toggle-track" aria-hidden="true">
+            <span class="theme-toggle-orb"></span>
+          </span>
+          <span class="theme-toggle-text">Light</span>
+        </button>
+      </div>
+    </header>
+
+    <main id="main-content">
+      <section class="hero section-shell" aria-labelledby="hero-title">
+        <div class="hero-copy">
+          <p class="eyebrow reveal reveal-1">Chongqing University · Undergraduate</p>
+          <h1 id="hero-title" class="reveal reveal-2">
+            以研究为径，<br>
+            <em>让软件可靠地生长。</em>
+          </h1>
+          <p class="hero-intro reveal reveal-3">
+            我是 <strong>leemeii</strong>，一名关注软件测试、静态分析与智能代码生成的本科生。
+            我喜欢从真实系统的问题出发，把好奇心变成可验证的研究。
+          </p>
+          <div class="hero-actions reveal reveal-4">
+            <a class="button button-primary" href="#research">
+              阅读我的研究
+              <span aria-hidden="true">↘</span>
+            </a>
+            <a class="button button-quiet" href="https://github.com/leemeii" target="_blank" rel="noopener noreferrer">
+              GitHub
+              <svg viewBox="0 0 20 20" aria-hidden="true">
+                <path d="M7 5h8v8M15 5 5 15"></path>
+              </svg>
+            </a>
+          </div>
+
+          <dl class="hero-stats reveal reveal-5" aria-label="个人概览">
+            <div>
+              <dt>3.85</dt>
+              <dd>综合绩点</dd>
+            </div>
+            <div>
+              <dt>01</dt>
+              <dd>专业排名</dd>
+            </div>
+            <div>
+              <dt>02</dt>
+              <dd>第一作者投稿</dd>
+            </div>
+            <div>
+              <dt>5000+</dt>
+              <dd>内容关注者</dd>
+            </div>
+          </dl>
+        </div>
+
+        <div class="hero-portrait reveal reveal-3" aria-label="leemeii 字母肖像">
+          <div class="portrait-frame">
+            <span class="portrait-index">PROFILE / 01</span>
+            <div class="portrait-initials" aria-hidden="true">LM</div>
+            <p>Software<br>Reliability<br>Explorer</p>
+            <span class="portrait-coordinate">29.5630° N<br>106.5516° E</span>
+          </div>
+          <div class="orbit orbit-one" aria-hidden="true"></div>
+          <div class="orbit orbit-two" aria-hidden="true"></div>
+          <span class="portrait-note note-one">STATIC<br>ANALYSIS</span>
+          <span class="portrait-note note-two">VECTOR<br>DBMS</span>
+        </div>
+      </section>
+
+      <section class="ticker" aria-label="研究关键词">
+        <div class="ticker-track">
+          <span>SOFTWARE TESTING</span><i>✦</i>
+          <span>STATIC ANALYSIS</span><i>✦</i>
+          <span>VECTOR DATABASES</span><i>✦</i>
+          <span>CODE GENERATION</span><i>✦</i>
+          <span aria-hidden="true">SOFTWARE TESTING</span><i aria-hidden="true">✦</i>
+          <span aria-hidden="true">STATIC ANALYSIS</span><i aria-hidden="true">✦</i>
+        </div>
+      </section>
+
+      <section class="about section-shell section-block" id="about" aria-labelledby="about-title">
+        <div class="section-heading">
+          <p class="eyebrow">01 / About</p>
+          <h2 id="about-title">在代码的表象之下，<br>寻找系统可信的理由。</h2>
+        </div>
+
+        <div class="about-grid">
+          <div class="about-prose">
+            <p class="lead">
+              我的研究兴趣位于软件工程与智能系统的交叉处：如何更有效地发现程序中的缺陷，
+              如何让静态分析器经受真实世界变换的检验，以及如何验证向量数据库复杂的排序行为。
+            </p>
+            <p>
+              目前，我将主要精力投入科研与开源实践，也持续记录计算机学习笔记和科研心得。
+              我相信严谨的方法、可复现的证据和面向真实问题的工程实践，能够共同推动更可靠的软件。
+            </p>
+          </div>
+
+          <dl class="fact-list">
+            <div>
+              <dt>现在</dt>
+              <dd>重庆大学本科生</dd>
+            </div>
+            <div>
+              <dt>关注</dt>
+              <dd>软件测试 · 程序分析 · 数据库系统</dd>
+            </div>
+            <div>
+              <dt>语言</dt>
+              <dd>CET-6 565 · CET-4 556</dd>
+            </div>
+            <div>
+              <dt>相信</dt>
+              <dd>Curiosity needs evidence.</dd>
+            </div>
+          </dl>
+        </div>
+      </section>
+
+      <section class="research section-shell section-block" id="research" aria-labelledby="research-title">
+        <div class="section-heading heading-row">
+          <div>
+            <p class="eyebrow">02 / Research</p>
+            <h2 id="research-title">Research threads</h2>
+          </div>
+          <p class="section-aside">从分析工具到数据系统，<br>围绕“可靠”展开的探索。</p>
+        </div>
+
+        <div class="research-directions">
+          <article class="direction">
+            <span class="direction-number">R.01</span>
+            <div>
+              <h3>静态分析器测试</h3>
+              <p>从真实重构实践中学习语义保持变换，系统性发现静态分析工具的行为缺陷。</p>
+            </div>
+            <span class="direction-tag">Program Analysis</span>
+          </article>
+          <article class="direction">
+            <span class="direction-number">R.02</span>
+            <div>
+              <h3>向量数据库测试</h3>
+              <p>利用保持排序关系的向量变换，检测向量数据库管理系统中的逻辑错误。</p>
+            </div>
+            <span class="direction-tag">Database Testing</span>
+          </article>
+          <article class="direction">
+            <span class="direction-number">R.03</span>
+            <div>
+              <h3>高效代码生成</h3>
+              <p>探索动态协作解码，让代码生成在质量、效率与协作机制之间取得更好的平衡。</p>
+            </div>
+            <span class="direction-tag">Code Intelligence</span>
+          </article>
+        </div>
+
+        <div class="works-heading">
+          <h3>Selected work</h3>
+          <p>投稿与进行中的研究</p>
+        </div>
+
+        <div class="works-list">
+          <article class="work-item featured-work">
+            <div class="work-venue">ASE<br><strong>2026</strong></div>
+            <div class="work-copy">
+              <p class="work-meta"><span>First Author</span><span>Submitted · ASE 2026</span></p>
+              <h3>Testing Static Analyzers via Semantic-Preserving Mutators Learned from Real-World Refactoring Practice</h3>
+              <p>从真实重构实践中学习语义保持变异器，用于自动化测试静态分析工具。</p>
+              <ul class="tag-list" aria-label="论文关键词">
+                <li>Static Analysis</li>
+                <li>Software Testing</li>
+                <li>Program Transformation</li>
+              </ul>
+            </div>
+          </article>
+
+          <article class="work-item">
+            <div class="work-venue">SIGMOD<br><strong>2027</strong></div>
+            <div class="work-copy">
+              <p class="work-meta"><span>First Author</span><span>Under Review · SIGMOD 2027</span></p>
+              <h3>Detecting Logic Bugs in Vector DBMSs via Ranking-Preserving Vector Transformations</h3>
+              <p>以保持排序关系的向量变换为测试预言，探索向量数据库的逻辑缺陷。</p>
+              <ul class="tag-list" aria-label="论文关键词">
+                <li>Vector DBMS</li>
+                <li>Logic Bugs</li>
+                <li>Metamorphic Testing</li>
+              </ul>
+            </div>
+          </article>
+
+          <article class="work-item">
+            <div class="work-venue">EMNLP<br><strong>SUB.</strong></div>
+            <div class="work-copy">
+              <p class="work-meta"><span>Fourth Author</span><span>Submitted · EMNLP</span></p>
+              <h3>CoEffi: Enhance Efficient Code Generation via Dynamic Collaborative Decoding</h3>
+              <p>通过动态协作解码增强高效代码生成。</p>
+              <ul class="tag-list" aria-label="论文关键词">
+                <li>Code Generation</li>
+                <li>Collaborative Decoding</li>
+              </ul>
+            </div>
+          </article>
+        </div>
+
+        <div class="research-notes">
+          <article>
+            <span class="note-label">OPEN SOURCE</span>
+            <h3>把研究问题带回真实工具</h3>
+            <p>持续向 SpotBugs、PMD、Checkstyle 等国际静态分析项目提交 Bug Reports 与 Pull Requests。</p>
+          </article>
+          <article>
+            <span class="note-label">PROJECTS</span>
+            <h3>从校级训练到国家级项目</h3>
+            <p>完成重庆大学 SRTP 项目，并参与国家级大学生创新创业训练计划项目。</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="honors section-block" id="honors" aria-labelledby="honors-title">
+        <div class="section-shell">
+          <div class="section-heading heading-row honors-heading">
+            <div>
+              <p class="eyebrow">03 / Honors</p>
+              <h2 id="honors-title">荣誉不是终点，<br>是前进的坐标。</h2>
+            </div>
+            <div class="honor-stamp" aria-hidden="true">
+              <span>LEARN</span>
+              <strong>→</strong>
+              <span>BUILD</span>
+            </div>
+          </div>
+
+          <div class="honor-groups">
+            <article class="honor-group">
+              <header>
+                <span>01</span>
+                <div>
+                  <p>ACADEMIC</p>
+                  <h3>学业表现</h3>
+                </div>
+              </header>
+              <ul>
+                <li><time>2026</time><span>综合绩点 3.85，专业第 1，年级第 4</span></li>
+                <li><time>2026</time><span>大二下学期绩点 3.99</span></li>
+                <li><time>2026</time><span>重庆市三好学生</span></li>
+                <li><time>2026</time><span>灵峰奖学金一等奖</span></li>
+                <li><time>2025</time><span>重庆大学三好学生</span></li>
+                <li><time>2025</time><span>CET-6 565 · CET-4 556</span></li>
+              </ul>
+            </article>
+
+            <article class="honor-group">
+              <header>
+                <span>02</span>
+                <div>
+                  <p>COMPETITIONS</p>
+                  <h3>竞赛奖项</h3>
+                </div>
+              </header>
+              <ul>
+                <li><time>2026</time><span>MCM/ICM H 奖 · 队长</span></li>
+                <li><time>2026</time><span>重庆计算机设计大赛省二等奖</span></li>
+                <li><time>2026</time><span>重庆市 AIGC 大赛进入市赛</span></li>
+                <li><time>2026</time><span>易班相关校级评选一等奖</span></li>
+                <li><time>2025</time><span>全国大学生数学竞赛省一等奖</span></li>
+                <li><time>2025</time><span>程序设计实训院一等奖</span></li>
+                <li><time>2025</time><span>绿春县创新创业大赛优秀奖</span></li>
+              </ul>
+            </article>
+
+            <article class="honor-group">
+              <header>
+                <span>03</span>
+                <div>
+                  <p>IN PROGRESS</p>
+                  <h3>正在发生</h3>
+                </div>
+              </header>
+              <ul>
+                <li><time>2026</time><span>全国大学生信息安全竞赛作品赛初赛评审中 · 队长</span></li>
+                <li><time>2026</time><span>国家级大学生创新创业训练计划项目</span></li>
+                <li><time>2026</time><span>静态分析工具 Bug Reports 与 Pull Requests</span></li>
+                <li><time>2025</time><span>重庆大学 SRTP 项目中等结项</span></li>
+              </ul>
+            </article>
+
+            <article class="honor-group accent-group">
+              <header>
+                <span>04</span>
+                <div>
+                  <p>BEYOND RESEARCH</p>
+                  <h3>影响力与实践</h3>
+                </div>
+              </header>
+              <ul>
+                <li><time>2026</time><span>小红书知识博主“椅女士” · 5000+ 粉丝，8 万+ 赞藏</span></li>
+                <li><time>2026</time><span>重庆女子半程马拉松完赛</span></li>
+                <li><time>2026</time><span>重庆杯羽毛球大赛学院代表队成员</span></li>
+              </ul>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="journey section-shell section-block" id="journey" aria-labelledby="journey-title">
+        <div class="section-heading heading-row">
+          <div>
+            <p class="eyebrow">04 / Journey</p>
+            <h2 id="journey-title">两年，向更深处走。</h2>
+          </div>
+          <p class="section-aside">记录那些让方向<br>逐渐清晰的节点。</p>
+        </div>
+
+        <ol class="timeline">
+          <li class="timeline-item">
+            <div class="timeline-year">
+              <span>YEAR</span>
+              <strong>2025</strong>
+              <small>大一</small>
+            </div>
+            <div class="timeline-copy">
+              <h3>打好基础，也第一次把想法做成项目。</h3>
+              <p>通过 CET-4，获评重庆大学三好学生；完成 SRTP 项目，在数学、程序设计与创新创业竞赛中积累实践。</p>
+              <ul class="tag-list">
+                <li>Academic Foundation</li>
+                <li>First Project</li>
+              </ul>
+            </div>
+          </li>
+          <li class="timeline-item current">
+            <div class="timeline-year">
+              <span>YEAR</span>
+              <strong>2026</strong>
+              <small>大二</small>
+            </div>
+            <div class="timeline-copy">
+              <h3>把问题推向研究，也把影响力延伸到课堂之外。</h3>
+              <p>专业排名保持第 1，三篇论文完成投稿；研究延伸至静态分析与向量数据库，竞赛、开源、内容创作与体育实践同步展开。</p>
+              <ul class="tag-list">
+                <li>Research Momentum</li>
+                <li>Wider Impact</li>
+              </ul>
+            </div>
+          </li>
+        </ol>
+      </section>
+
+      <section class="contact section-block" id="contact" aria-labelledby="contact-title">
+        <div class="section-shell contact-inner">
+          <p class="eyebrow">05 / Contact</p>
+          <h2 id="contact-title">对可靠软件、<br>有趣问题或开源协作感兴趣？</h2>
+          <p>欢迎在 GitHub 了解我的项目与最新实践。</p>
+          <a class="contact-link" href="https://github.com/leemeii" target="_blank" rel="noopener noreferrer">
+            <span>github.com/leemeii</span>
+            <svg viewBox="0 0 40 40" aria-hidden="true">
+              <path d="M11 29 29 11M14 11h15v15"></path>
+            </svg>
+          </a>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="section-shell footer-inner">
+        <a class="wordmark footer-wordmark" href="#home">
+          <span class="wordmark-mark" aria-hidden="true">L.</span>
+          <span>leemeii</span>
+        </a>
+        <p>Keep asking. Keep building.</p>
+        <p>© 2026 leemeii</p>
+      </div>
+    </footer>
+
+    <script type="module" src="assets/js/main.js"></script>
+  </body>
+</html>
