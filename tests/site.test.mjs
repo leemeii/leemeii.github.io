@@ -83,3 +83,19 @@ test('declares descriptive metadata and stable asset paths', async () => {
   assert.match(html, /src="assets\/js\/main\.js"/);
   assert.match(html, /type="module"/);
 });
+
+test('ships an accessible responsive stylesheet for every declared visual mode', async () => {
+  const html = await readProjectFile('index.html');
+  const stylesheetPath = html.match(/<link[^>]+rel="stylesheet"[^>]+href="([^"]+)"/)?.[1];
+
+  assert.equal(stylesheetPath, 'assets/css/styles.css');
+  const css = await readProjectFile(stylesheetPath);
+
+  assert.match(css, /:root\s*{[^}]*--paper:/s);
+  assert.match(css, /\[data-theme="dark"\]\s*{/);
+  assert.match(css, /:focus-visible/);
+  assert.match(css, /@media\s*\(max-width:\s*960px\)/);
+  assert.match(css, /@media\s*\(max-width:\s*640px\)/);
+  assert.match(css, /@media\s*\(prefers-reduced-motion:\s*reduce\)/);
+  assert.match(css, /overflow-x:\s*(?:hidden|clip)/);
+});
