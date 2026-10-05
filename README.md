@@ -1,30 +1,44 @@
-# leemeii.github.io
+# Meilin Li · Academic Homepage
 
-leemeii 的个人主页，记录软件测试、静态分析、向量数据库研究，以及学业、竞赛与实践经历。
+An English-first academic homepage for **Meilin Li / 李美霖**, an undergraduate in Software Engineering at Chongqing University. The site presents research interests, news, publications, projects, honors, and activities in a compact profile-rail layout inspired by modern academic CVs.
 
-## 在线访问
+## Live site
 
 [leemeii.github.io](https://leemeii.github.io/)
 
-## 本地预览
+## Local preview
 
-在仓库根目录启动静态文件服务器：
+From the repository root, start a static server:
 
 ```powershell
 python -m http.server 8000
 ```
 
-随后访问 `http://localhost:8000/`。
+Then open `http://localhost:8000/`.
 
-## 验证
+## Verification
 
 ```powershell
 npm test
 ```
 
-## 内容维护
+The Node test suite checks page structure, publication statuses, privacy boundaries, internal and external links, responsive CSS, contrast tokens, theme behavior, and active-section navigation.
 
-- `index.html`：主页文字、研究成果与荣誉记录
-- `assets/css/styles.css`：视觉设计、响应式布局和颜色主题
-- `assets/js/main.js`：主题偏好与切换逻辑
-- `tests/site.test.mjs`：页面结构、内容边界和交互逻辑检查
+## Project structure
+
+- `index.html` — public profile content, metadata, navigation, publications, news, and honors.
+- `assets/css/styles.css` — visual system, sticky profile rail, themes, responsive layout, and reduced-motion behavior.
+- `assets/js/main.js` — persistent theme preference and active-section navigation.
+- `assets/favicon.svg` — the `LM` monogram.
+- `tests/site.test.mjs` — automated content, privacy, accessibility, layout, and interaction contracts.
+- `docs/superpowers/` — approved design specification and implementation plan.
+
+## Updating content
+
+- Add recent events to the `#news` section in `index.html`, newest first.
+- Update research outcomes in `#publications`; keep accepted and under-review statuses exact.
+- Add only selected, confirmed items to `#honors`.
+- Add external buttons only when a verified public URL exists.
+- Run `npm test` after every content change.
+
+Proof documents, local evidence paths, phone numbers, student identifiers, account identifiers, certificate numbers, submission IDs, and private review details must never be copied into this public repository.
