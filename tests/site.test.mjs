@@ -212,15 +212,16 @@ test('uses a wide, youthful academic treatment with readable type and a circular
   assert.match(html, /<nav class="site-nav section-nav"/);
   assert.match(html, /<div class="profile-photo-frame">\s*<img[^>]+class="profile-photo"/s);
   assert.match(css, /--paper:\s*#ffffff/);
-  assert.match(css, /--shell:\s*calc\(100vw\s*-\s*144px\)/);
+  assert.match(css, /--shell:\s*calc\(100vw\s*-\s*192px\)/);
   assert.match(css, /--accent:\s*#1e4f91/);
   assert.match(css, /\.page-shell\s*{[^}]*grid-template-columns:\s*270px\s+minmax\(0,\s*1fr\)/s);
   assert.match(css, /\.content-column\s*{[^}]*max-width:\s*none/s);
   assert.match(css, /\.site-nav\s*{[^}]*position:\s*sticky/s);
   assert.match(css, /body\s*{[^}]*background:\s*var\(--paper\)/s);
   assert.match(css, /body\s*{[^}]*font-family:\s*var\(--sans\)[^}]*font-size:\s*18px/s);
-  assert.match(css, /\.site-nav a\s*{[^}]*font-size:\s*18px/s);
-  assert.match(css, /\.site-nav \.site-brand\s*{[^}]*font-size:\s*23px/s);
+  assert.match(css, /\.site-nav a\s*{[^}]*font-size:\s*20px/s);
+  assert.match(css, /\.site-nav \.site-brand\s*{[^}]*font-size:\s*25px/s);
+  assert.match(css, /@media\s*\(max-width:\s*640px\)[\s\S]*?\.site-nav a\s*{[^}]*font-size:\s*16px/s);
   assert.match(css, /\.section-heading h2,[\s\S]*?\.about-copy h2\s*{[^}]*font-size:\s*31px/s);
   assert.doesNotMatch(css, /radial-gradient/);
   assert.match(css, /\.profile-photo-frame\s*{[^}]*width:\s*230px[^}]*height:\s*230px[^}]*overflow:\s*hidden[^}]*border-radius:\s*50%/s);
@@ -231,20 +232,37 @@ test('uses a wide, youthful academic treatment with readable type and a circular
 test('links public work and reserves responsive publication artwork', async () => {
   const html = await readProjectFile('index.html');
   const css = await readProjectFile('assets/css/styles.css');
-  const artwork = [
-    'assets/img/publications/safuzzer-teaser.svg',
+  const svgArtwork = [
     'assets/img/publications/coeffi-teaser.svg',
     'assets/img/publications/under-review-teaser.svg',
   ];
 
-  for (const path of artwork) {
+  for (const path of svgArtwork) {
     assert.ok(html.includes(`src="${path}"`), `${path} must be used by a publication`);
     assert.match(await readProjectFile(path), /<svg[^>]+viewBox="0 0 640 360"/);
   }
 
-  assert.match(css, /\.publication-row\s*{[^}]*grid-template-columns:\s*190px\s+minmax\(0,\s*1fr\)/s);
-  assert.match(css, /\.publication-visual\s*{[^}]*aspect-ratio:\s*16\s*\/\s*9/s);
+  const safuzzerArtwork = 'assets/img/publications/safuzzer-teaser.png';
+  assert.match(html, /src="assets\/img\/publications\/safuzzer-teaser\.png"[^>]+width="1059"[^>]+height="734"/);
+  assert.ok((await readFile(projectFile(safuzzerArtwork))).length > 100_000);
+  assert.match(css, /\.publication-row\s*{[^}]*grid-template-columns:\s*260px\s+minmax\(0,\s*1fr\)/s);
+  assert.match(css, /\.publication-visual\s*{[^}]*aspect-ratio:\s*4\s*\/\s*3/s);
+  assert.match(css, /\.publication-visual img\s*{[^}]*object-fit:\s*contain/s);
   assert.ok((html.match(/class="inline-icon"/g) ?? []).length >= 3);
+});
+
+test('makes the scholarship and ASE acceptance visually prominent in news', async () => {
+  const html = await readProjectFile('index.html');
+  const css = await readProjectFile('assets/css/styles.css');
+  const news = html.match(/<section class="content-section" id="news"[\s\S]*?<\/section>/)?.[0];
+
+  assert.ok(news, 'the news section must remain visible');
+  assert.match(news, /news-row news-highlight scholarship-highlight[\s\S]*?National Scholarship/);
+  assert.match(news, /news-row news-highlight paper-highlight[\s\S]*?ASE 2026/);
+  assert.equal((news.match(/class="news-highlight-icon"/g) ?? []).length, 2);
+  assert.match(css, /\.news-highlight\s*{[^}]*grid-template-columns:\s*86px\s+38px\s+minmax\(0,\s*1fr\)/s);
+  assert.match(css, /\.scholarship-highlight\s*{[^}]*background:/s);
+  assert.match(css, /\.paper-highlight\s*{[^}]*background:/s);
 });
 
 test('resolves and toggles color themes deterministically', async () => {
