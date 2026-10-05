@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 360" role="img" aria-labelledby="title desc">
+  <title id="title">SAFuzzer paper visual placeholder</title>
+  <desc id="desc">A restrained blue placeholder to be replaced by the final paper teaser.</desc>
+  <rect width="640" height="360" rx="28" fill="#eef4fd"/>
+  <path d="M0 285C140 215 238 336 384 266s190-38 256-2v96H0Z" fill="#dce9fa"/>
+  <rect x="54" y="54" width="260" height="192" rx="18" fill="#fff" stroke="#b8cbe6" stroke-width="3"/>
+  <path d="M92 103h102M92 137h166M92 171h135M92 205h88" stroke="#1e4f91" stroke-width="12" stroke-linecap="round" opacity=".82"/>
+  <circle cx="421" cy="148" r="68" fill="#1e4f91"/>
+  <circle cx="421" cy="148" r="34" fill="none" stroke="#fff" stroke-width="12"/>
+  <path d="m468 195 48 48" stroke="#fff" stroke-width="16" stroke-linecap="round"/>
+  <text x="54" y="316" fill="#173b67" font-family="Arial, sans-serif" font-size="22" font-weight="700" letter-spacing="2">ASE 2026 · PAPER VISUAL</text>
+</svg>

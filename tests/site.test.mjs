@@ -50,7 +50,6 @@ test('presents current research outcomes accurately', async () => {
   for (const publicFact of [
     'National Scholarship',
     'National College Student Information Security Contest',
-    'National College Student Mathematics Competition',
     '550,000',
     '110,000',
     'Testing Static Analyzers via Semantic-Preserving Mutators',
@@ -59,23 +58,39 @@ test('presents current research outcomes accurately', async () => {
     assert.ok(html.includes(publicFact), `missing supplied fact: ${publicFact}`);
   }
 
-  assert.match(html, /Accepted\s*·\s*ASE 2026/);
-  assert.match(html, /Accepted\s*·\s*EMNLP 2026/);
-  assert.match(html, /Under Review\s*·\s*SIGMOD 2027/);
+  assert.match(html, /ASE 2026\s*·\s*First Author[\s\S]*?Accepted/);
+  assert.match(html, /EMNLP 2026\s*·\s*Fourth Author[\s\S]*?Accepted/);
+  assert.match(html, /Under Review/);
   assert.match(html, /<time datetime="2026-10">2026\.10<\/time>[\s\S]*?National Scholarship/);
   assert.doesNotMatch(html, /Submitted\s*·\s*(ASE 2026|EMNLP 2026)/i);
   assert.doesNotMatch(html, /Accepted\s*·\s*SIGMOD 2027/i);
+
+  assert.ok(html.includes('href="https://conf.researchr.org/details/ase-2026/ase-2026-research-track/248/Testing-Static-Analyzers-via-Semantic-Preserving-Mutators-Learned-from-Real-World-Ref"'));
+  assert.ok(html.includes('href="https://2026.emnlp.org/"'));
 });
 
 test('withholds the under-review vector DBMS manuscript identity', async () => {
   const html = await readProjectFile('index.html');
   const publicationEntries = html.match(/<article class="publication-row(?: featured-publication)?">[\s\S]*?<\/article>/g) ?? [];
-  const sigmodEntry = publicationEntries.find((entry) => entry.includes('SIGMOD'));
+  const sigmodEntry = publicationEntries.find((entry) => entry.includes('Under Review'));
 
-  assert.ok(sigmodEntry, 'the SIGMOD status entry must remain visible');
-  assert.match(html, /Under Review\s*·\s*SIGMOD 2027/);
+  assert.ok(sigmodEntry, 'the under-review status entry must remain visible');
+  assert.match(html, /Under Review/);
   assert.match(sigmodEntry, /Title withheld during peer review\./);
   assert.doesNotMatch(sigmodEntry, /Meilin Li et al\./i);
+});
+
+test('presents the requested Beyond the lab activities in order', async () => {
+  const html = await readProjectFile('index.html');
+  const activities = html.match(/<section class="content-section" id="activities"[\s\S]*?<\/section>/)?.[0];
+
+  assert.ok(activities, 'the activities section must remain visible');
+  assert.match(
+    activities,
+    /Social media entrepreneur[\s\S]*?Xiaohongshu[\s\S]*?Badminton enthusiast[\s\S]*?Chongda Cup[\s\S]*?Long-distance runner[\s\S]*?marathon/i,
+  );
+  assert.doesNotMatch(activities, /Social practice|Hundred People, Hundred Classes/i);
+  assert.ok(activities.includes('href="https://www.xiaohongshu.com/user/profile/5acc96a911be1002cdc6703b"'));
 });
 
 test('keeps private source data out of the public page', async () => {
@@ -120,6 +135,7 @@ test('declares descriptive metadata and stable asset paths', async () => {
   assert.match(icon, /<svg[^>]+viewBox="0 0 64 64"/);
   assert.match(icon, /<title>Meilin Li monogram<\/title>/);
   assert.match(icon, /<text[^>]*>LML<\/text>/);
+  assert.match(icon, /fill="#1e4f91"/);
   assert.equal(profilePhotoPath, 'assets/img/meilin-li.jpg');
   const profilePhoto = await readFile(projectFile(profilePhotoPath));
   assert.ok(profilePhoto.length > 10_000, 'profile photo must be a real local image');
@@ -189,19 +205,46 @@ test('ships the sticky academic rail and narrow-screen fallback', async () => {
   assert.match(css, /@media\s*\(prefers-reduced-motion:\s*reduce\)/);
 });
 
-test('uses a restrained academic treatment with a larger desktop profile rail', async () => {
+test('uses a wide, youthful academic treatment with readable type and a circular portrait', async () => {
   const html = await readProjectFile('index.html');
   const css = await readProjectFile('assets/css/styles.css');
 
   assert.match(html, /<nav class="site-nav section-nav"/);
-  assert.match(css, /\.page-shell\s*{[^}]*grid-template-columns:\s*300px\s+minmax\(0,\s*1fr\)/s);
+  assert.match(html, /<div class="profile-photo-frame">\s*<img[^>]+class="profile-photo"/s);
+  assert.match(css, /--paper:\s*#ffffff/);
+  assert.match(css, /--shell:\s*calc\(100vw\s*-\s*144px\)/);
+  assert.match(css, /--accent:\s*#1e4f91/);
+  assert.match(css, /\.page-shell\s*{[^}]*grid-template-columns:\s*270px\s+minmax\(0,\s*1fr\)/s);
   assert.match(css, /\.content-column\s*{[^}]*max-width:\s*none/s);
   assert.match(css, /\.site-nav\s*{[^}]*position:\s*sticky/s);
   assert.match(css, /body\s*{[^}]*background:\s*var\(--paper\)/s);
-  assert.match(css, /font-family:\s*Georgia,\s*"Times New Roman",\s*serif/);
+  assert.match(css, /body\s*{[^}]*font-family:\s*var\(--sans\)[^}]*font-size:\s*18px/s);
+  assert.match(css, /\.site-nav a\s*{[^}]*font-size:\s*18px/s);
+  assert.match(css, /\.site-nav \.site-brand\s*{[^}]*font-size:\s*23px/s);
+  assert.match(css, /\.section-heading h2,[\s\S]*?\.about-copy h2\s*{[^}]*font-size:\s*31px/s);
   assert.doesNotMatch(css, /radial-gradient/);
-  assert.match(css, /\.profile-photo\s*{[^}]*object-fit:\s*cover/s);
+  assert.match(css, /\.profile-photo-frame\s*{[^}]*width:\s*230px[^}]*height:\s*230px[^}]*overflow:\s*hidden[^}]*border-radius:\s*50%/s);
+  assert.match(css, /\.profile-photo\s*{[^}]*object-fit:\s*cover[^}]*transform:\s*scale\(1\.45\)/s);
   assert.match(css, /\.reveal\s*{[^}]*opacity:\s*1[^}]*animation:\s*none/s);
+});
+
+test('links public work and reserves responsive publication artwork', async () => {
+  const html = await readProjectFile('index.html');
+  const css = await readProjectFile('assets/css/styles.css');
+  const artwork = [
+    'assets/img/publications/safuzzer-teaser.svg',
+    'assets/img/publications/coeffi-teaser.svg',
+    'assets/img/publications/under-review-teaser.svg',
+  ];
+
+  for (const path of artwork) {
+    assert.ok(html.includes(`src="${path}"`), `${path} must be used by a publication`);
+    assert.match(await readProjectFile(path), /<svg[^>]+viewBox="0 0 640 360"/);
+  }
+
+  assert.match(css, /\.publication-row\s*{[^}]*grid-template-columns:\s*190px\s+minmax\(0,\s*1fr\)/s);
+  assert.match(css, /\.publication-visual\s*{[^}]*aspect-ratio:\s*16\s*\/\s*9/s);
+  assert.ok((html.match(/class="inline-icon"/g) ?? []).length >= 3);
 });
 
 test('resolves and toggles color themes deterministically', async () => {
@@ -209,7 +252,7 @@ test('resolves and toggles color themes deterministically', async () => {
 
   assert.equal(resolveTheme('light', true), 'light');
   assert.equal(resolveTheme('dark', false), 'dark');
-  assert.equal(resolveTheme(null, true), 'dark');
+  assert.equal(resolveTheme(null, true), 'light');
   assert.equal(resolveTheme('unexpected', false), 'light');
   assert.equal(nextTheme('dark'), 'light');
   assert.equal(nextTheme('light'), 'dark');
@@ -240,7 +283,7 @@ test('applies a theme with an accurate accessible action label', async () => {
   assert.equal(root.dataset.theme, 'dark');
   assert.equal(label.textContent, 'Dark');
   assert.equal(button.attributes['aria-label'], 'Switch to light theme');
-  assert.equal(themeMeta.content, '#101916');
+  assert.equal(themeMeta.content, '#0f172a');
 
   applyTheme(root, button, 'light', themeMeta);
 
@@ -302,8 +345,8 @@ test('falls back safely when browser storage is unavailable', async () => {
     mediaQuery: { matches: true },
   });
 
-  assert.equal(initialTheme, 'dark');
-  assert.equal(root.dataset.theme, 'dark');
+  assert.equal(initialTheme, 'light');
+  assert.equal(root.dataset.theme, 'light');
 });
 
 test('browser bootstrap survives a throwing localStorage property getter', async () => {
@@ -327,10 +370,10 @@ test('browser bootstrap survives a throwing localStorage property getter', async
   };
 
   assert.doesNotThrow(() => initializeBrowserTheme(browserWindow, browserDocument));
-  assert.equal(root.dataset.theme, 'dark');
+  assert.equal(root.dataset.theme, 'light');
 });
 
-test('first-paint theme follows a dark system preference when storage is blocked', async () => {
+test('first-paint theme defaults to light when storage is blocked', async () => {
   const html = await readProjectFile('index.html');
   const inlineScript = html.match(/<script>\s*([\s\S]*?)<\/script>/)?.[1];
   const root = { dataset: { theme: 'light' } };
@@ -352,7 +395,7 @@ test('first-paint theme follows a dark system preference when storage is blocked
   assert.ok(inlineScript, 'the first-paint theme script must exist');
   runInNewContext(inlineScript, context);
 
-  assert.equal(root.dataset.theme, 'dark');
+  assert.equal(root.dataset.theme, 'light');
 });
 
 test('resolves the most visible active section deterministically', async () => {

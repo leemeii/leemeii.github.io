@@ -17,10 +17,9 @@
         savedTheme = localStorage.getItem('leemeii-theme');
       } catch {}
 
-      const darkBySystem = window.matchMedia?.('(prefers-color-scheme: dark)').matches ?? false;
       document.documentElement.dataset.theme = savedTheme === 'light' || savedTheme === 'dark'
         ? savedTheme
-        : darkBySystem ? 'dark' : 'light';
+        : 'light';
     </script>
   </head>
   <body>
@@ -37,7 +36,9 @@
 
     <div class="page-shell">
       <aside class="profile-rail" aria-label="Profile and site navigation">
-        <img class="profile-photo" src="assets/img/meilin-li.jpg" alt="Meilin Li hiking in the mountains" width="1279" height="1848" fetchpriority="high">
+        <div class="profile-photo-frame">
+          <img class="profile-photo" src="assets/img/meilin-li.jpg" alt="Meilin Li hiking in the mountains" width="1279" height="1848" fetchpriority="high">
+        </div>
 
         <header class="identity reveal reveal-1">
           <p class="identity-kicker">Chongqing · China</p>
@@ -118,30 +119,35 @@
           </header>
           <div class="publication-list">
             <article class="publication-row featured-publication">
-              <div class="publication-venue"><span>ASE</span><strong>2026</strong></div>
+              <figure class="publication-visual">
+                <img src="assets/img/publications/safuzzer-teaser.svg" alt="Placeholder for the SAFuzzer paper visual" width="640" height="360" loading="lazy">
+              </figure>
               <div class="publication-copy">
-                <p class="publication-meta"><span>First Author</span><span class="status accepted">Accepted · ASE 2026</span></p>
-                <h3>Testing Static Analyzers via Semantic-Preserving Mutators Learned from Real-World Refactoring Practice</h3>
+                <p class="publication-meta"><span>ASE 2026 · First Author</span><span class="status accepted">Accepted</span></p>
+                <h3><a class="publication-title-link" href="https://conf.researchr.org/details/ase-2026/ase-2026-research-track/248/Testing-Static-Analyzers-via-Semantic-Preserving-Mutators-Learned-from-Real-World-Ref" target="_blank" rel="noopener noreferrer">Testing Static Analyzers via Semantic-Preserving Mutators Learned from Real-World Refactoring Practice <svg class="inline-icon" viewBox="0 0 20 20" aria-hidden="true"><path d="M7 4h9v9M16 4 6 14M4 7v9h9"/></svg></a></h3>
                 <p>Meilin Li et al. · Software testing and program analysis.</p>
               </div>
             </article>
             <article class="publication-row">
-              <div class="publication-venue"><span>EMNLP</span><strong>2026</strong></div>
+              <figure class="publication-visual">
+                <img src="assets/img/publications/coeffi-teaser.svg" alt="Placeholder for the CoEffi paper visual" width="640" height="360" loading="lazy">
+              </figure>
               <div class="publication-copy">
-                <p class="publication-meta"><span>Fourth Author</span><span class="status accepted">Accepted · EMNLP 2026</span></p>
-                <h3>CoEffi: Enhance Efficient Code Generation via Dynamic Collaborative Decoding</h3>
+                <p class="publication-meta"><span>EMNLP 2026 · Fourth Author</span><span class="status accepted">Accepted</span></p>
+                <h3><a class="publication-title-link" href="https://2026.emnlp.org/" target="_blank" rel="noopener noreferrer">CoEffi: Enhance Efficient Code Generation via Dynamic Collaborative Decoding <svg class="inline-icon" viewBox="0 0 20 20" aria-hidden="true"><path d="M7 4h9v9M16 4 6 14M4 7v9h9"/></svg></a></h3>
                 <p>Meilin Li et al. · Efficient code generation.</p>
               </div>
             </article>
             <article class="publication-row">
-              <div class="publication-venue"><span>SIGMOD</span><strong>2027</strong></div>
+              <figure class="publication-visual">
+                <img src="assets/img/publications/under-review-teaser.svg" alt="Placeholder for an under-review paper visual" width="640" height="360" loading="lazy">
+              </figure>
               <div class="publication-copy">
-                <p class="publication-meta"><span>First Author</span><span class="status review">Under Review · SIGMOD 2027</span></p>
+                <p class="publication-meta"><span>First Author</span><span class="status review">Under Review </span></p>
                 <h3>Title withheld during peer review.</h3>
               </div>
             </article>
           </div>
-          <p class="publication-note">Links will be added when public versions become available.</p>
         </section>
 
         <section class="content-section" id="honors" aria-labelledby="honors-title">
@@ -154,8 +160,7 @@
             <li><time>2026</time><p><strong>National Second Prize</strong><span>National College Student Information Security Contest · Team Leader</span></p></li>
             <li><time>2026</time><p><strong>Chongqing Outstanding Student</strong><span>Municipal-level comprehensive honor</span></p></li>
             <li><time>2026</time><p><strong>Provincial Second Prize</strong><span>Chongqing Computer Design Competition</span></p></li>
-            <li><time>2026</time><p><strong>Honorable Mention</strong><span>Mathematical Contest in Modeling / Interdisciplinary Contest in Modeling · Team Leader</span></p></li>
-            <li><time>2025</time><p><strong>Provincial First Prize</strong><span>National College Student Mathematics Competition</span></p></li>
+
             <li><time>2025</time><p><strong>Outstanding Student</strong><span>Chongqing University</span></p></li>
           </ul>
         </section>
@@ -168,24 +173,19 @@
           <div class="activity-grid">
             <article class="activity-feature">
               <p class="activity-index">A / 01</p>
-              <h3>Knowledge sharing at scale</h3>
-              <p>I share learning methods, software-engineering notes, and research reflections with fellow students.</p>
+              <h3><a class="activity-title-link" href="https://www.xiaohongshu.com/user/profile/5acc96a911be1002cdc6703b" target="_blank" rel="noopener noreferrer">Social media entrepreneur <svg class="inline-icon" viewBox="0 0 20 20" aria-hidden="true"><path d="M7 4h9v9M16 4 6 14M4 7v9h9"/></svg></a></h3>
+              <p>I create content about learning methods, software engineering, and research reflections on Xiaohongshu.</p>
               <dl><div><dt>550,000+</dt><dd>Content reads</dd></div><div><dt>110,000+</dt><dd>Likes &amp; saves</dd></div></dl>
             </article>
             <article>
               <p class="activity-index">A / 02</p>
-              <h3>Social practice</h3>
-              <p>Member of Chongqing University's “Hundred People, Hundred Classes · Youth Expedition” summer practice program.</p>
+              <h3>Badminton enthusiast</h3>
+              <p>I am an avid badminton player and regularly take part in university competitions, including the Chongda Cup.</p>
             </article>
             <article>
               <p class="activity-index">A / 03</p>
-              <h3>International study</h3>
-              <p>Participated in a 2026 summer study program at the University of Oxford and the University of Cambridge.</p>
-            </article>
-            <article>
-              <p class="activity-index">A / 04</p>
-              <h3>Sport &amp; endurance</h3>
-              <p>Half-marathon finisher and a college representative in the university badminton competition.</p>
+              <h3>Long-distance runner</h3>
+              <p>I enjoy long-distance running and take part in marathon and half-marathon events.</p>
             </article>
           </div>
         </section>

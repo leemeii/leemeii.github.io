@@ -56,14 +56,14 @@ Add tests named `publishes an English-first bilingual academic structure`, `pres
 
 ```js
 assert.match(html, /<html[^>]+lang="en"/);
-for (const id of ['about', 'news', 'research', 'publications', 'projects', 'honors', 'activities']) {
+for (const id of ['about', 'news', 'publications', 'honors', 'activities']) {
   assert.equal((html.match(new RegExp(`\\bid="${id}"`, 'g')) ?? []).length, 1);
 }
 for (const fact of [
   'Meilin Li', '李美霖', 'Chongqing University', 'Software Engineering',
   'Testing Static Analyzers via Semantic-Preserving Mutators',
   'CoEffi: Enhance Efficient Code Generation',
-  'Detecting Logic Bugs in Vector DBMSs',
+  'Title withheld during peer review.',
 ]) assert.ok(html.includes(fact));
 assert.match(html, /Accepted\s*·\s*ASE 2026/);
 assert.match(html, /Accepted\s*·\s*EMNLP 2026/);
@@ -88,9 +88,9 @@ Use `<html lang="en">`, English metadata, and this public identity:
 - `Meilin Li` with `<span lang="zh-CN">李美霖</span>`.
 - `Undergraduate in Software Engineering` and `Chongqing University`.
 - University email through a `mailto:` link and GitHub through a safe external link.
-- `LM` monogram markup instead of a personal photograph.
+- A locally hosted profile photograph with a circular crop.
 
-Replace the old hero/journey flow with the seven required main sections. Use the newest source facts: 2025–26 GPA 3.86 with academic and comprehensive rankings both `1/119`, ASE 2026 and EMNLP 2026 acceptances, SIGMOD 2027 under review, National College Student Information Security Contest national second prize, National College Student Mathematics Competition provincial first prize, over 550,000 content reads, over 110,000 likes and saves, social practice, sport, and Oxford/Cambridge study experience. Omit unsupported links and all private proof details.
+Replace the old hero/journey flow with the five required main sections. Use the newest public facts: first in the Software Engineering major, ASE 2026 and EMNLP 2026 acceptances, a title-withheld SIGMOD 2027 submission under review, the National Scholarship, the National College Student Information Security Contest national second prize, the National College Student Mathematics Competition provincial first prize, over 550,000 content reads, over 110,000 likes and saves, badminton, long-distance running, and Oxford/Cambridge study experience. Omit unsupported links and all private proof details.
 
 - [ ] **Step 4: Run the document contract and confirm green**
 

@@ -1,15 +1,15 @@
 const THEME_KEY = 'leemeii-theme';
 const THEME_COLORS = Object.freeze({
   light: '#ffffff',
-  dark: '#101916',
+  dark: '#0f172a',
 });
 
-export function resolveTheme(storedTheme, prefersDark) {
+export function resolveTheme(storedTheme, _prefersDark) {
   if (storedTheme === 'light' || storedTheme === 'dark') {
     return storedTheme;
   }
 
-  return prefersDark ? 'dark' : 'light';
+  return 'light';
 }
 
 export function nextTheme(currentTheme) {
