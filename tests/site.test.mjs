@@ -11,6 +11,7 @@ async function readProjectFile(path) {
 
 test('publishes an English-first bilingual academic structure', async () => {
   const html = await readProjectFile('index.html');
+  const about = html.match(/<section class="content-section about-section[\s\S]*?<\/section>/)?.[0];
   const sectionIds = ['about', 'news', 'publications', 'honors', 'activities'];
   const requiredIds = ['main-content', ...sectionIds];
 
@@ -22,6 +23,10 @@ test('publishes an English-first bilingual academic structure', async () => {
   assert.match(html, /Chongqing University/);
   assert.match(html, /Software Engineering/);
   assert.match(html, /rank(?:ed)? first in my major/i);
+  assert.ok(about, 'the About Me section must remain visible');
+  assert.match(about, /under the supervision of Professor Zifan Xie/);
+  assert.match(about, /My research focuses on software testing and program analysis/);
+  assert.doesNotMatch(about, /systems,I|of\s{2,}Professor/);
   assert.doesNotMatch(html, /GPA 3\.86|2025–26 academic year|\b1\/119\b/);
 
   for (const id of requiredIds) {
