@@ -99,7 +99,9 @@ test('declares descriptive metadata and stable asset paths', async () => {
   assert.match(html, /<meta[^>]+name="description"[^>]+content="[^"]{20,}"/);
   assert.doesNotMatch(html, /fonts\.(?:googleapis|gstatic)\.com/);
   assert.equal(iconPath, 'assets/favicon.svg');
-  assert.match(await readProjectFile(iconPath), /<svg[^>]+viewBox="0 0 64 64"/);
+  const icon = await readProjectFile(iconPath);
+  assert.match(icon, /<svg[^>]+viewBox="0 0 64 64"/);
+  assert.match(icon, /<title>Meilin Li monogram<\/title>/);
   assert.match(html, /href="assets\/css\/styles\.css"/);
   assert.match(html, /src="assets\/js\/main\.js"/);
   assert.match(html, /type="module"/);
@@ -115,7 +117,7 @@ test('ships an accessible responsive stylesheet for every declared visual mode',
   assert.match(css, /:root\s*{[^}]*--paper:/s);
   assert.match(css, /\[data-theme="dark"\]\s*{/);
   assert.match(css, /:focus-visible/);
-  assert.match(css, /@media\s*\(max-width:\s*960px\)/);
+  assert.match(css, /@media\s*\(max-width:\s*900px\)/);
   assert.match(css, /@media\s*\(max-width:\s*640px\)/);
   assert.match(css, /@media\s*\(prefers-reduced-motion:\s*reduce\)/);
   assert.match(css, /overflow-x:\s*(?:hidden|clip)/);
@@ -144,9 +146,24 @@ test('ships an accessible responsive stylesheet for every declared visual mode',
   assert.ok(field && fieldAccent && fieldMuted, 'field contrast tokens must be declared');
   assert.ok(contrast(fieldAccent, field) >= 4.5);
   assert.ok(contrast(fieldMuted, field) >= 4.5);
-  assert.match(css, /\.featured-work \.work-venue\s*{[^}]*color:\s*var\(--field-accent\)/s);
-  assert.match(css, /\.honor-group header > span\s*{[^}]*color:\s*var\(--field-accent\)/s);
-  assert.match(css, /\.honor-group time\s*{[^}]*color:\s*var\(--field-muted\)/s);
+  assert.match(css, /\.featured-publication \.publication-venue\s*{[^}]*color:\s*var\(--field-accent\)/s);
+  assert.match(css, /\.featured-publication \.publication-copy > p\s*{[^}]*color:\s*var\(--field-muted\)/s);
+});
+
+test('ships the sticky academic rail and narrow-screen fallback', async () => {
+  const css = await readProjectFile('assets/css/styles.css');
+
+  assert.match(css, /\.page-shell\s*{[^}]*display:\s*grid/s);
+  assert.match(css, /\.profile-rail\s*{[^}]*position:\s*sticky/s);
+  assert.match(
+    css,
+    /grid-template-columns:\s*(?:minmax\([^;]+|\d+px)\s+minmax\(0,\s*1fr\)/,
+  );
+  assert.match(css, /@media\s*\(max-width:\s*900px\)/);
+  assert.match(css, /@media\s*\(max-width:\s*640px\)/);
+  assert.match(css, /overflow-wrap:\s*anywhere/);
+  assert.match(css, /overflow-x:\s*(?:hidden|clip)/);
+  assert.match(css, /@media\s*\(prefers-reduced-motion:\s*reduce\)/);
 });
 
 test('resolves and toggles color themes deterministically', async () => {

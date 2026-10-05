@@ -1,6 +1,9 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="leemeii">
-  <rect width="64" height="64" fill="#f3eee2"/>
-  <rect x="3" y="3" width="58" height="58" fill="none" stroke="#173129" stroke-width="4"/>
-  <path d="M17 14h10v27h17v9H17z" fill="#173129"/>
-  <circle cx="49" cy="46" r="5" fill="#b63e31"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-labelledby="title">
+  <title>Meilin Li monogram</title>
+  <rect width="64" height="64" rx="4" fill="#f3eee2"/>
+  <path d="M8 8h48v48H8z" fill="none" stroke="#173129" stroke-width="2"/>
+  <path d="M8 24h48M8 40h48M24 8v48M40 8v48" stroke="#173129" stroke-opacity=".16"/>
+  <circle cx="51" cy="48" r="11" fill="#b63e31"/>
+  <path d="M15 15h8v26h12v8H15z" fill="#173129"/>
+  <path d="M31 49V15h7l7 13 7-13h4v30h-7V29l-7 12-7-12v20z" fill="#173129"/>
 </svg>
