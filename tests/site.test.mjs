@@ -1,6 +1,7 @@
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 import test from 'node:test';
+import { runInNewContext } from 'node:vm';
 
 const projectFile = (path) => new URL(`../${path}`, import.meta.url);
 
@@ -285,6 +286,31 @@ test('browser bootstrap survives a throwing localStorage property getter', async
   assert.equal(root.dataset.theme, 'dark');
 });
 
+test('first-paint theme follows a dark system preference when storage is blocked', async () => {
+  const html = await readProjectFile('index.html');
+  const inlineScript = html.match(/<script>\s*([\s\S]*?)<\/script>/)?.[1];
+  const root = { dataset: { theme: 'light' } };
+  const context = {
+    document: { documentElement: root },
+    window: {
+      matchMedia(query) {
+        assert.equal(query, '(prefers-color-scheme: dark)');
+        return { matches: true };
+      },
+    },
+  };
+  Object.defineProperty(context, 'localStorage', {
+    get() {
+      throw new DOMException('blocked', 'SecurityError');
+    },
+  });
+
+  assert.ok(inlineScript, 'the first-paint theme script must exist');
+  runInNewContext(inlineScript, context);
+
+  assert.equal(root.dataset.theme, 'dark');
+});
+
 test('resolves the most visible active section deterministically', async () => {
   const { resolveActiveSection } = await import('../assets/js/main.js');
   const order = ['about', 'news', 'research'];
@@ -377,4 +403,41 @@ test('updates link state from real observer entries', async () => {
   assert.deepEqual(observed, ['about', 'news']);
   assert.equal(links[0].attributes.has('aria-current'), false);
   assert.equal(links[1].attributes.get('aria-current'), 'location');
+});
+
+test('keeps the most visible section active across incremental observer callbacks', async () => {
+  const { initializeSectionNavigation } = await import('../assets/js/main.js');
+  const createLink = (hash) => ({
+    hash,
+    attributes: new Map(),
+    setAttribute(name, value) {
+      this.attributes.set(name, value);
+    },
+    removeAttribute(name) {
+      this.attributes.delete(name);
+    },
+  });
+  const links = [createLink('#about'), createLink('#news')];
+  const sections = [{ id: 'about' }, { id: 'news' }];
+  let notify = null;
+
+  initializeSectionNavigation({
+    links,
+    sections,
+    observerFactory(callback) {
+      notify = callback;
+      return { observe() {} };
+    },
+  });
+
+  notify([
+    { target: sections[0], isIntersecting: true, intersectionRatio: 0.9 },
+    { target: sections[1], isIntersecting: true, intersectionRatio: 0.4 },
+  ]);
+  notify([
+    { target: sections[1], isIntersecting: true, intersectionRatio: 0.5 },
+  ]);
+
+  assert.equal(links[0].attributes.get('aria-current'), 'location');
+  assert.equal(links[1].attributes.has('aria-current'), false);
 });

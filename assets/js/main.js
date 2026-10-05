@@ -114,11 +114,23 @@ export function initializeSectionNavigation({ links, sections, observerFactory }
   }
 
   const sectionOrder = sections.map((section) => section.id);
+  const sectionIds = new Set(sectionOrder);
+  const visibilityById = new Map(sections.map((section) => [section.id, {
+    target: section,
+    isIntersecting: false,
+    intersectionRatio: 0,
+  }]));
   let currentId = sectionOrder[0];
   applyActiveLink(links, currentId);
 
   const observer = observerFactory((entries) => {
-    currentId = resolveActiveSection(entries, sectionOrder, currentId);
+    for (const entry of entries) {
+      if (sectionIds.has(entry.target?.id)) {
+        visibilityById.set(entry.target.id, entry);
+      }
+    }
+
+    currentId = resolveActiveSection(visibilityById.values(), sectionOrder, currentId);
     applyActiveLink(links, currentId);
   }, {
     rootMargin: '-22% 0px -58% 0px',

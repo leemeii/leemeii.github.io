@@ -12,15 +12,15 @@
     <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
     <link rel="stylesheet" href="assets/css/styles.css">
     <script>
+      let savedTheme = null;
       try {
-        const savedTheme = localStorage.getItem('leemeii-theme');
-        const darkBySystem = window.matchMedia('(prefers-color-scheme: dark)').matches;
-        document.documentElement.dataset.theme = savedTheme === 'light' || savedTheme === 'dark'
-          ? savedTheme
-          : darkBySystem ? 'dark' : 'light';
-      } catch (error) {
-        document.documentElement.dataset.theme = 'light';
-      }
+        savedTheme = localStorage.getItem('leemeii-theme');
+      } catch {}
+
+      const darkBySystem = window.matchMedia?.('(prefers-color-scheme: dark)').matches ?? false;
+      document.documentElement.dataset.theme = savedTheme === 'light' || savedTheme === 'dark'
+        ? savedTheme
+        : darkBySystem ? 'dark' : 'light';
     </script>
   </head>
   <body>
