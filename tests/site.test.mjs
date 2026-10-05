@@ -201,7 +201,7 @@ test('applies a theme with an accurate accessible action label', async () => {
 
   assert.equal(root.dataset.theme, 'dark');
   assert.equal(label.textContent, 'Dark');
-  assert.equal(button.attributes['aria-label'], '切换到浅色主题');
+  assert.equal(button.attributes['aria-label'], 'Switch to light theme');
   assert.equal(themeMeta.content, '#101916');
 });
 
@@ -238,7 +238,7 @@ test('initializes from preferences and persists the next user choice', async () 
   assert.equal(root.dataset.theme, 'light');
   assert.equal(saved.get('leemeii-theme'), 'light');
   assert.equal(label.textContent, 'Light');
-  assert.equal(attributes['aria-label'], '切换到深色主题');
+  assert.equal(attributes['aria-label'], 'Switch to dark theme');
 });
 
 test('falls back safely when browser storage is unavailable', async () => {
@@ -283,4 +283,98 @@ test('browser bootstrap survives a throwing localStorage property getter', async
 
   assert.doesNotThrow(() => initializeBrowserTheme(browserWindow, browserDocument));
   assert.equal(root.dataset.theme, 'dark');
+});
+
+test('resolves the most visible active section deterministically', async () => {
+  const { resolveActiveSection } = await import('../assets/js/main.js');
+  const order = ['about', 'news', 'research'];
+
+  assert.equal(resolveActiveSection([
+    { target: { id: 'news' }, isIntersecting: true, intersectionRatio: 0.4 },
+    { target: { id: 'research' }, isIntersecting: true, intersectionRatio: 0.7 },
+  ], order, 'about'), 'research');
+  assert.equal(resolveActiveSection([
+    { target: { id: 'research' }, isIntersecting: true, intersectionRatio: 0.5 },
+    { target: { id: 'news' }, isIntersecting: true, intersectionRatio: 0.5 },
+  ], order, 'about'), 'news');
+  assert.equal(resolveActiveSection([
+    { target: { id: 'research' }, isIntersecting: false, intersectionRatio: 1 },
+  ], order, 'about'), 'about');
+});
+
+test('applies one accurate current-location marker to section links', async () => {
+  const { applyActiveLink } = await import('../assets/js/main.js');
+  const createLink = (hash) => ({
+    hash,
+    attributes: new Map(),
+    setAttribute(name, value) {
+      this.attributes.set(name, value);
+    },
+    removeAttribute(name) {
+      this.attributes.delete(name);
+    },
+  });
+  const links = [createLink('#about'), createLink('#news'), createLink('#research')];
+
+  applyActiveLink(links, 'news');
+
+  assert.equal(links[0].attributes.has('aria-current'), false);
+  assert.equal(links[1].attributes.get('aria-current'), 'location');
+  assert.equal(links[2].attributes.has('aria-current'), false);
+});
+
+test('leaves ordinary anchors untouched when section observation is unavailable', async () => {
+  const { initializeSectionNavigation } = await import('../assets/js/main.js');
+  const links = [{ hash: '#about', attributes: new Map() }];
+
+  const navigation = initializeSectionNavigation({
+    links,
+    sections: [{ id: 'about' }],
+    observerFactory: null,
+  });
+
+  assert.equal(navigation, null);
+  assert.equal(links[0].attributes.size, 0);
+});
+
+test('updates link state from real observer entries', async () => {
+  const { initializeSectionNavigation } = await import('../assets/js/main.js');
+  const createLink = (hash) => ({
+    hash,
+    attributes: new Map(),
+    setAttribute(name, value) {
+      this.attributes.set(name, value);
+    },
+    removeAttribute(name) {
+      this.attributes.delete(name);
+    },
+  });
+  const links = [createLink('#about'), createLink('#news')];
+  const sections = [{ id: 'about' }, { id: 'news' }];
+  const observed = [];
+  let notify = null;
+  const observer = {
+    observe(section) {
+      observed.push(section.id);
+    },
+    disconnect() {},
+  };
+
+  const result = initializeSectionNavigation({
+    links,
+    sections,
+    observerFactory(callback) {
+      notify = callback;
+      return observer;
+    },
+  });
+  notify([
+    { target: sections[0], isIntersecting: true, intersectionRatio: 0.2 },
+    { target: sections[1], isIntersecting: true, intersectionRatio: 0.8 },
+  ]);
+
+  assert.equal(result, observer);
+  assert.deepEqual(observed, ['about', 'news']);
+  assert.equal(links[0].attributes.has('aria-current'), false);
+  assert.equal(links[1].attributes.get('aria-current'), 'location');
 });

@@ -1,4 +1,8 @@
 const THEME_KEY = 'leemeii-theme';
+const THEME_COLORS = Object.freeze({
+  light: '#f3eee2',
+  dark: '#101916',
+});
 
 export function resolveTheme(storedTheme, prefersDark) {
   if (storedTheme === 'light' || storedTheme === 'dark') {
@@ -12,8 +16,12 @@ export function nextTheme(currentTheme) {
   return currentTheme === 'dark' ? 'light' : 'dark';
 }
 
-export function applyTheme(root, button, theme) {
+export function applyTheme(root, button, theme, themeMeta = null) {
   root.dataset.theme = theme;
+
+  if (themeMeta) {
+    themeMeta.setAttribute('content', THEME_COLORS[theme]);
+  }
 
   if (!button) {
     return;
@@ -21,14 +29,14 @@ export function applyTheme(root, button, theme) {
 
   const isDark = theme === 'dark';
   const text = button.querySelector('.theme-toggle-text');
-  button.setAttribute('aria-label', isDark ? '切换到浅色主题' : '切换到深色主题');
+  button.setAttribute('aria-label', isDark ? 'Switch to light theme' : 'Switch to dark theme');
 
   if (text) {
     text.textContent = isDark ? 'Dark' : 'Light';
   }
 }
 
-export function initializeTheme({ root, button, storage, mediaQuery }) {
+export function initializeTheme({ root, button, storage, mediaQuery, themeMeta = null }) {
   let storedTheme = null;
 
   try {
@@ -38,7 +46,7 @@ export function initializeTheme({ root, button, storage, mediaQuery }) {
   }
 
   const initialTheme = resolveTheme(storedTheme, mediaQuery?.matches ?? false);
-  applyTheme(root, button, initialTheme);
+  applyTheme(root, button, initialTheme, themeMeta);
 
   if (!button) {
     return initialTheme;
@@ -46,7 +54,7 @@ export function initializeTheme({ root, button, storage, mediaQuery }) {
 
   button.addEventListener('click', () => {
     const theme = nextTheme(root.dataset.theme);
-    applyTheme(root, button, theme);
+    applyTheme(root, button, theme, themeMeta);
 
     try {
       storage?.setItem(THEME_KEY, theme);
@@ -58,11 +66,86 @@ export function initializeTheme({ root, button, storage, mediaQuery }) {
   return initialTheme;
 }
 
-if (typeof document !== 'undefined' && typeof window !== 'undefined') {
-  initializeTheme({
-    root: document.documentElement,
-    button: document.querySelector('[data-theme-toggle]'),
-    storage: window.localStorage,
-    mediaQuery: window.matchMedia('(prefers-color-scheme: dark)'),
+export function initializeBrowserTheme(windowRef, documentRef) {
+  let storage = null;
+
+  try {
+    storage = windowRef.localStorage;
+  } catch {
+    storage = null;
+  }
+
+  return initializeTheme({
+    root: documentRef.documentElement,
+    button: documentRef.querySelector('[data-theme-toggle]'),
+    themeMeta: documentRef.querySelector('meta[name="theme-color"]'),
+    storage,
+    mediaQuery: windowRef.matchMedia?.('(prefers-color-scheme: dark)') ?? { matches: false },
   });
+}
+
+export function resolveActiveSection(entries, sectionOrder, currentId) {
+  const orderIndex = new Map(sectionOrder.map((id, index) => [id, index]));
+  const visible = Array.from(entries)
+    .filter((entry) => entry.isIntersecting && orderIndex.has(entry.target?.id))
+    .sort((left, right) => {
+      const ratioDifference = (right.intersectionRatio ?? 0) - (left.intersectionRatio ?? 0);
+      if (ratioDifference !== 0) return ratioDifference;
+      return orderIndex.get(left.target.id) - orderIndex.get(right.target.id);
+    });
+
+  return visible[0]?.target.id ?? currentId;
+}
+
+export function applyActiveLink(links, activeId) {
+  for (const link of links) {
+    const hash = link.hash ?? link.getAttribute?.('href') ?? '';
+    if (hash === `#${activeId}`) {
+      link.setAttribute('aria-current', 'location');
+    } else {
+      link.removeAttribute('aria-current');
+    }
+  }
+}
+
+export function initializeSectionNavigation({ links, sections, observerFactory }) {
+  if (typeof observerFactory !== 'function' || sections.length === 0 || links.length === 0) {
+    return null;
+  }
+
+  const sectionOrder = sections.map((section) => section.id);
+  let currentId = sectionOrder[0];
+  applyActiveLink(links, currentId);
+
+  const observer = observerFactory((entries) => {
+    currentId = resolveActiveSection(entries, sectionOrder, currentId);
+    applyActiveLink(links, currentId);
+  }, {
+    rootMargin: '-22% 0px -58% 0px',
+    threshold: [0, 0.1, 0.25, 0.5, 0.75, 1],
+  });
+
+  for (const section of sections) {
+    observer.observe(section);
+  }
+
+  return observer;
+}
+
+export function initializeBrowserNavigation(windowRef, documentRef) {
+  const links = Array.from(documentRef.querySelectorAll?.('[data-section-link]') ?? []);
+  const sections = links
+    .map((link) => documentRef.getElementById?.(link.hash.slice(1)))
+    .filter(Boolean);
+  const Observer = windowRef.IntersectionObserver;
+  const observerFactory = typeof Observer === 'function'
+    ? (callback, options) => new Observer(callback, options)
+    : null;
+
+  return initializeSectionNavigation({ links, sections, observerFactory });
+}
+
+if (typeof document !== 'undefined' && typeof window !== 'undefined') {
+  initializeBrowserTheme(window, document);
+  initializeBrowserNavigation(window, document);
 }
