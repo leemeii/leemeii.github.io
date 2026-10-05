@@ -1,6 +1,6 @@
 const THEME_KEY = 'leemeii-theme';
 const THEME_COLORS = Object.freeze({
-  light: '#f3eee2',
+  light: '#ffffff',
   dark: '#101916',
 });
 

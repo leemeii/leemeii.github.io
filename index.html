@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="Meilin Li is a Software Engineering undergraduate at Chongqing University researching software testing, static analysis, vector databases, and intelligent code generation.">
-    <meta name="theme-color" content="#f3eee2">
+    <meta name="theme-color" content="#ffffff">
     <meta property="og:title" content="Meilin Li · Academic Homepage">
     <meta property="og:description" content="Research in dependable software, program analysis, database testing, and code intelligence.">
     <meta property="og:type" content="website">
@@ -26,14 +26,18 @@
   <body>
     <a class="skip-link" href="#main-content">Skip to main content</a>
 
+    <nav class="site-nav section-nav" aria-label="Primary navigation">
+      <a class="site-brand" href="#about">Meilin Li</a>
+      <a data-section-link href="#about" aria-current="location">About</a>
+      <a data-section-link href="#news">News</a>
+      <a data-section-link href="#publications">Publications</a>
+      <a data-section-link href="#honors">Honors</a>
+      <a data-section-link href="#activities">Activities</a>
+    </nav>
+
     <div class="page-shell">
       <aside class="profile-rail" aria-label="Profile and site navigation">
-        <div class="monogram" aria-label="Meilin Li monogram">
-          <span class="monogram-index">PROFILE / 01</span>
-          <span class="monogram-grid" aria-hidden="true"></span>
-          <strong aria-hidden="true">LM</strong>
-          <span class="monogram-caption">Software<br>Reliability<br>Explorer</span>
-        </div>
+        <img class="profile-photo" src="assets/img/meilin-li.jpg" alt="Meilin Li hiking in the mountains" width="1279" height="1848" fetchpriority="high">
 
         <header class="identity reveal reveal-1">
           <p class="identity-kicker">Chongqing · China</p>
@@ -41,16 +45,6 @@
           <p class="identity-role">Undergraduate in Software Engineering</p>
           <p class="identity-school">Chongqing University</p>
         </header>
-
-        <nav class="section-nav reveal reveal-2" aria-label="Primary navigation">
-          <a data-section-link href="#about" aria-current="location"><span>01</span>About</a>
-          <a data-section-link href="#news"><span>02</span>News</a>
-          <a data-section-link href="#research"><span>03</span>Research</a>
-          <a data-section-link href="#publications"><span>04</span>Publications</a>
-          <a data-section-link href="#projects"><span>05</span>Projects</a>
-          <a data-section-link href="#honors"><span>06</span>Honors</a>
-          <a data-section-link href="#activities"><span>07</span>Activities</a>
-        </nav>
 
         <div class="profile-links reveal reveal-3">
           <a href="mailto:Leemeii@stu.cqu.edu.cn">
@@ -74,27 +68,14 @@
           <div class="section-label"><span>01</span><p>About</p></div>
           <div class="about-copy">
             <p class="availability"><span aria-hidden="true"></span>Open to research conversations &amp; collaboration</p>
-            <h2 id="about-title">Building evidence for<br><em>dependable software.</em></h2>
+            <h2 id="about-title">About Me</h2>
             <p class="lead">
-              I am a 2024-entry undergraduate in Software Engineering at Chongqing University. My work explores how testing, program analysis, and intelligent techniques can expose subtle defects in real software systems.
+              I am a 2024-entry undergraduate in Software Engineering at Chongqing University, where I am ranked first in my major. My work explores how testing, program analysis, and intelligent techniques can expose subtle defects in real software systems.
             </p>
             <p>
               I am especially interested in testing static analyzers and vector database systems, where reliable behavior depends on reasoning beyond conventional test oracles. I enjoy turning observations from real engineering practice into reproducible research methods.
             </p>
           </div>
-
-          <dl class="profile-facts" aria-label="Academic snapshot">
-            <div><dt>GPA 3.86</dt><dd>2025–26 academic year</dd></div>
-            <div><dt>1/119</dt><dd>Academic ranking</dd></div>
-            <div><dt>1/119</dt><dd>Comprehensive evaluation</dd></div>
-          </dl>
-
-          <ul class="interest-strip" aria-label="Research interests">
-            <li>Software Testing</li>
-            <li>Static Analysis</li>
-            <li>Vector DBMS</li>
-            <li>Code Intelligence</li>
-          </ul>
         </section>
 
         <section class="content-section" id="news" aria-labelledby="news-title">
@@ -104,6 +85,10 @@
           </header>
           <ol class="news-list">
             <li class="news-row featured-news">
+              <time datetime="2026-10">2026.10</time>
+              <p><span class="news-mark">Honor</span>Received the <strong>National Scholarship</strong>.</p>
+            </li>
+            <li class="news-row">
               <time datetime="2026-08">2026.08</time>
               <p><span class="news-mark">Award</span>Our team received the <strong>National Second Prize</strong> in the National College Student Information Security Contest. I served as team leader.</p>
             </li>
@@ -126,36 +111,9 @@
           </ol>
         </section>
 
-        <section class="content-section" id="research" aria-labelledby="research-title">
-          <header class="section-heading">
-            <div class="section-label"><span>03</span><p>Research</p></div>
-            <h2 id="research-title">Research interests</h2>
-          </header>
-          <div class="research-grid">
-            <article class="research-item">
-              <span class="research-number">R.01</span>
-              <h3>Testing Static Analyzers</h3>
-              <p>Learning semantics-preserving program transformations from real refactoring practice to reveal behavioral defects in static-analysis tools.</p>
-              <ul class="tag-list"><li>Program Analysis</li><li>Metamorphic Testing</li></ul>
-            </article>
-            <article class="research-item">
-              <span class="research-number">R.02</span>
-              <h3>Vector Database Testing</h3>
-              <p>Designing ranking-preserving vector transformations as test oracles for finding logic bugs in vector database management systems.</p>
-              <ul class="tag-list"><li>Vector DBMS</li><li>Logic Bugs</li></ul>
-            </article>
-            <article class="research-item">
-              <span class="research-number">R.03</span>
-              <h3>Intelligent Code Generation</h3>
-              <p>Studying collaborative decoding and multi-agent optimization for more efficient, useful, and trustworthy code generation.</p>
-              <ul class="tag-list"><li>Code Intelligence</li><li>LLM for SE</li></ul>
-            </article>
-          </div>
-        </section>
-
         <section class="content-section" id="publications" aria-labelledby="publications-title">
           <header class="section-heading">
-            <div class="section-label"><span>04</span><p>Publications</p></div>
+            <div class="section-label"><span>03</span><p>Publications</p></div>
             <h2 id="publications-title">Selected work</h2>
           </header>
           <div class="publication-list">
@@ -179,44 +137,20 @@
               <div class="publication-venue"><span>SIGMOD</span><strong>2027</strong></div>
               <div class="publication-copy">
                 <p class="publication-meta"><span>First Author</span><span class="status review">Under Review · SIGMOD 2027</span></p>
-                <h3>Detecting Logic Bugs in Vector DBMSs via Ranking-Preserving Vector Transformations</h3>
-                <p>Meilin Li et al. · Vector database testing.</p>
+                <h3>Title withheld during peer review.</h3>
               </div>
             </article>
           </div>
           <p class="publication-note">Links will be added when public versions become available.</p>
         </section>
 
-        <section class="content-section" id="projects" aria-labelledby="projects-title">
-          <header class="section-heading">
-            <div class="section-label"><span>05</span><p>Projects</p></div>
-            <h2 id="projects-title">Projects &amp; open source</h2>
-          </header>
-          <div class="project-list">
-            <article class="project-row">
-              <span class="project-index">01</span>
-              <div><h3>Static Analyzer Testing</h3><p>Building mutator-based testing methods and reporting defects to real-world analyzers including SpotBugs, PMD, and Checkstyle.</p></div>
-              <span class="project-kind">Research / Open Source</span>
-            </article>
-            <article class="project-row">
-              <span class="project-index">02</span>
-              <div><h3>Vector DBMS Logic-Bug Detection</h3><p>Exploring ranking-preserving transformations that make approximate and exact vector-search behavior testable.</p></div>
-              <span class="project-kind">Database Testing</span>
-            </article>
-            <article class="project-row">
-              <span class="project-index">03</span>
-              <div><h3>Multi-Agent Optimization for Code Generation</h3><p>Research for a National College Student Innovation and Entrepreneurship Training Program project.</p></div>
-              <span class="project-kind">National Innovation Project</span>
-            </article>
-          </div>
-        </section>
-
         <section class="content-section" id="honors" aria-labelledby="honors-title">
           <header class="section-heading">
-            <div class="section-label"><span>06</span><p>Honors</p></div>
+            <div class="section-label"><span>04</span><p>Honors</p></div>
             <h2 id="honors-title">Honors &amp; awards</h2>
           </header>
           <ul class="honor-list">
+            <li><time>2026</time><p><strong>National Scholarship</strong><span>National undergraduate academic honor</span></p></li>
             <li><time>2026</time><p><strong>National Second Prize</strong><span>National College Student Information Security Contest · Team Leader</span></p></li>
             <li><time>2026</time><p><strong>Chongqing Outstanding Student</strong><span>Municipal-level comprehensive honor</span></p></li>
             <li><time>2026</time><p><strong>Provincial Second Prize</strong><span>Chongqing Computer Design Competition</span></p></li>
@@ -228,7 +162,7 @@
 
         <section class="content-section" id="activities" aria-labelledby="activities-title">
           <header class="section-heading">
-            <div class="section-label"><span>07</span><p>Activities</p></div>
+            <div class="section-label"><span>05</span><p>Activities</p></div>
             <h2 id="activities-title">Beyond the lab</h2>
           </header>
           <div class="activity-grid">

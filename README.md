@@ -1,6 +1,6 @@
 # Meilin Li · Academic Homepage
 
-An English-first academic homepage for **Meilin Li / 李美霖**, an undergraduate in Software Engineering at Chongqing University. The site presents research interests, news, publications, projects, honors, and activities in a compact profile-rail layout inspired by modern academic CVs.
+An English-first academic homepage for **Meilin Li / 李美霖**, an undergraduate in Software Engineering at Chongqing University. The site presents a concise biography, news, publications, honors, and activities in a compact profile-rail layout inspired by modern academic CVs.
 
 ## Live site
 
@@ -29,7 +29,8 @@ The Node test suite checks page structure, publication statuses, privacy boundar
 - `index.html` — public profile content, metadata, navigation, publications, news, and honors.
 - `assets/css/styles.css` — visual system, sticky profile rail, themes, responsive layout, and reduced-motion behavior.
 - `assets/js/main.js` — persistent theme preference and active-section navigation.
-- `assets/favicon.svg` — the `LM` monogram.
+- `assets/img/meilin-li.jpg` — the locally hosted profile photograph.
+- `assets/favicon.svg` — the `LML` monogram.
 - `tests/site.test.mjs` — automated content, privacy, accessibility, layout, and interaction contracts.
 - `docs/superpowers/` — approved design specification and implementation plan.
 

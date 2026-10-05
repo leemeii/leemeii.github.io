@@ -11,7 +11,7 @@ async function readProjectFile(path) {
 
 test('publishes an English-first bilingual academic structure', async () => {
   const html = await readProjectFile('index.html');
-  const sectionIds = ['about', 'news', 'research', 'publications', 'projects', 'honors', 'activities'];
+  const sectionIds = ['about', 'news', 'publications', 'honors', 'activities'];
   const requiredIds = ['main-content', ...sectionIds];
 
   assert.match(html, /<html[^>]+lang="en"/);
@@ -21,6 +21,8 @@ test('publishes an English-first bilingual academic structure', async () => {
   assert.match(html, /<span[^>]+lang="zh-CN"[^>]*>李美霖<\/span>/);
   assert.match(html, /Chongqing University/);
   assert.match(html, /Software Engineering/);
+  assert.match(html, /rank(?:ed)? first in my major/i);
+  assert.doesNotMatch(html, /GPA 3\.86|2025–26 academic year|\b1\/119\b/);
 
   for (const id of requiredIds) {
     const occurrences = html.match(new RegExp(`\\bid="${id}"`, 'g')) ?? [];
@@ -30,6 +32,9 @@ test('publishes an English-first bilingual academic structure', async () => {
   for (const id of sectionIds) {
     assert.match(html, new RegExp(`<a[^>]+data-section-link[^>]+href="#${id}"|<a[^>]+href="#${id}"[^>]+data-section-link`));
   }
+
+  assert.doesNotMatch(html, /\bid="(?:research|projects)"/);
+  assert.doesNotMatch(html, /href="#(?:research|projects)"/);
 
   const ids = new Set([...html.matchAll(/\bid="([^"]+)"/g)].map((match) => match[1]));
   const internalTargets = [...html.matchAll(/href="#([^"]+)"/g)].map((match) => match[1]);
@@ -43,14 +48,12 @@ test('presents current research outcomes accurately', async () => {
   const html = await readProjectFile('index.html');
 
   for (const publicFact of [
-    'GPA 3.86',
-    '1/119',
+    'National Scholarship',
     'National College Student Information Security Contest',
     'National College Student Mathematics Competition',
     '550,000',
     '110,000',
     'Testing Static Analyzers via Semantic-Preserving Mutators',
-    'Detecting Logic Bugs in Vector DBMSs',
     'CoEffi: Enhance Efficient Code Generation',
   ]) {
     assert.ok(html.includes(publicFact), `missing supplied fact: ${publicFact}`);
@@ -59,8 +62,20 @@ test('presents current research outcomes accurately', async () => {
   assert.match(html, /Accepted\s*·\s*ASE 2026/);
   assert.match(html, /Accepted\s*·\s*EMNLP 2026/);
   assert.match(html, /Under Review\s*·\s*SIGMOD 2027/);
+  assert.match(html, /<time datetime="2026-10">2026\.10<\/time>[\s\S]*?National Scholarship/);
   assert.doesNotMatch(html, /Submitted\s*·\s*(ASE 2026|EMNLP 2026)/i);
   assert.doesNotMatch(html, /Accepted\s*·\s*SIGMOD 2027/i);
+});
+
+test('withholds the under-review vector DBMS manuscript identity', async () => {
+  const html = await readProjectFile('index.html');
+  const publicationEntries = html.match(/<article class="publication-row(?: featured-publication)?">[\s\S]*?<\/article>/g) ?? [];
+  const sigmodEntry = publicationEntries.find((entry) => entry.includes('SIGMOD'));
+
+  assert.ok(sigmodEntry, 'the SIGMOD status entry must remain visible');
+  assert.match(html, /Under Review\s*·\s*SIGMOD 2027/);
+  assert.match(sigmodEntry, /Title withheld during peer review\./);
+  assert.doesNotMatch(sigmodEntry, /Meilin Li et al\./i);
 });
 
 test('keeps private source data out of the public page', async () => {
@@ -95,6 +110,7 @@ test('keeps private source data out of the public page', async () => {
 test('declares descriptive metadata and stable asset paths', async () => {
   const html = await readProjectFile('index.html');
   const iconPath = html.match(/<link[^>]+rel="icon"[^>]+href="([^"]+)"/)?.[1];
+  const profilePhotoPath = html.match(/<img[^>]+class="profile-photo"[^>]+src="([^"]+)"/)?.[1];
 
   assert.match(html, /<title>[^<]*Meilin Li[^<]*<\/title>/i);
   assert.match(html, /<meta[^>]+name="description"[^>]+content="[^"]{20,}"/);
@@ -103,6 +119,11 @@ test('declares descriptive metadata and stable asset paths', async () => {
   const icon = await readProjectFile(iconPath);
   assert.match(icon, /<svg[^>]+viewBox="0 0 64 64"/);
   assert.match(icon, /<title>Meilin Li monogram<\/title>/);
+  assert.match(icon, /<text[^>]*>LML<\/text>/);
+  assert.equal(profilePhotoPath, 'assets/img/meilin-li.jpg');
+  const profilePhoto = await readFile(projectFile(profilePhotoPath));
+  assert.ok(profilePhoto.length > 10_000, 'profile photo must be a real local image');
+  assert.match(html, /<img[^>]+class="profile-photo"[^>]+alt="Meilin Li hiking in the mountains"/);
   assert.match(html, /href="assets\/css\/styles\.css"/);
   assert.match(html, /src="assets\/js\/main\.js"/);
   assert.match(html, /type="module"/);
@@ -147,8 +168,9 @@ test('ships an accessible responsive stylesheet for every declared visual mode',
   assert.ok(field && fieldAccent && fieldMuted, 'field contrast tokens must be declared');
   assert.ok(contrast(fieldAccent, field) >= 4.5);
   assert.ok(contrast(fieldMuted, field) >= 4.5);
-  assert.match(css, /\.featured-publication \.publication-venue\s*{[^}]*color:\s*var\(--field-accent\)/s);
-  assert.match(css, /\.featured-publication \.publication-copy > p\s*{[^}]*color:\s*var\(--field-muted\)/s);
+  assert.match(css, /\.featured-publication\s*{[^}]*background:\s*var\(--paper-raised\)/s);
+  assert.match(css, /\.featured-publication \.publication-venue\s*{[^}]*color:\s*var\(--accent\)/s);
+  assert.match(css, /\.featured-publication \.publication-copy > p\s*{[^}]*color:\s*var\(--ink-soft\)/s);
 });
 
 test('ships the sticky academic rail and narrow-screen fallback', async () => {
@@ -165,6 +187,21 @@ test('ships the sticky academic rail and narrow-screen fallback', async () => {
   assert.match(css, /overflow-wrap:\s*anywhere/);
   assert.match(css, /overflow-x:\s*(?:hidden|clip)/);
   assert.match(css, /@media\s*\(prefers-reduced-motion:\s*reduce\)/);
+});
+
+test('uses a restrained academic treatment with a larger desktop profile rail', async () => {
+  const html = await readProjectFile('index.html');
+  const css = await readProjectFile('assets/css/styles.css');
+
+  assert.match(html, /<nav class="site-nav section-nav"/);
+  assert.match(css, /\.page-shell\s*{[^}]*grid-template-columns:\s*300px\s+minmax\(0,\s*1fr\)/s);
+  assert.match(css, /\.content-column\s*{[^}]*max-width:\s*none/s);
+  assert.match(css, /\.site-nav\s*{[^}]*position:\s*sticky/s);
+  assert.match(css, /body\s*{[^}]*background:\s*var\(--paper\)/s);
+  assert.match(css, /font-family:\s*Georgia,\s*"Times New Roman",\s*serif/);
+  assert.doesNotMatch(css, /radial-gradient/);
+  assert.match(css, /\.profile-photo\s*{[^}]*object-fit:\s*cover/s);
+  assert.match(css, /\.reveal\s*{[^}]*opacity:\s*1[^}]*animation:\s*none/s);
 });
 
 test('resolves and toggles color themes deterministically', async () => {
@@ -204,6 +241,13 @@ test('applies a theme with an accurate accessible action label', async () => {
   assert.equal(label.textContent, 'Dark');
   assert.equal(button.attributes['aria-label'], 'Switch to light theme');
   assert.equal(themeMeta.content, '#101916');
+
+  applyTheme(root, button, 'light', themeMeta);
+
+  assert.equal(root.dataset.theme, 'light');
+  assert.equal(label.textContent, 'Light');
+  assert.equal(button.attributes['aria-label'], 'Switch to dark theme');
+  assert.equal(themeMeta.content, '#ffffff');
 });
 
 test('initializes from preferences and persists the next user choice', async () => {
